@@ -262,28 +262,6 @@ extern void sseg_display(char c){
 					(1<<PA5) | (1<<PA4) |
 					(1<<PA7);
 			break;
-		case '^':
-			/*
-				 __
-				|  |
-				    
-
-			*/
-			PORTA = (1<<PA5) | (1<<PA6) |
-					(1<<PA7);
-			break;
-		case 'v':
-		case 'V':
-		case 'u':
-			/*
-				
-				 
-				|__|
-
-			*/
-			PORTA = (1<<PA1) | (1<<PA2) |
-					(1<<PA3);
-			break;
 		case 'U':
 			/*
 				
@@ -306,7 +284,7 @@ extern void sseg_display(char c){
 					(1<<PA4);
 			break;
 		case 'I':
-		// case 'i':
+		case 'i':
 			/*
 
 				   |
@@ -335,7 +313,31 @@ extern void sseg_display(char c){
 			*/
 			PORTA = (1<<PA3);
 			break;
-		case '<':
+
+		/* Movement chars */
+		case '^':
+			/*
+				 __
+				|  |
+				    
+
+			*/
+			PORTA = (1<<PA5) | (1<<PA6) |
+					(1<<PA7);
+			break;
+		case 'v':
+		case 'V':
+		case 'u':
+			/*
+				
+				 
+				|__|
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA2) |
+					(1<<PA3);
+			break;
+		case '>':
 			/*
 				
 				 __|
@@ -345,7 +347,7 @@ extern void sseg_display(char c){
 			PORTA = (1<<PA3) | (1<<PA4) |
 					(1<<PA6);
 			break;
-		case '>':
+		case '<':
 			/*
 				
 				|__
@@ -364,6 +366,49 @@ extern void sseg_display(char c){
 			*/
 			PORTA = (1<<PA4);
 			break;
+
+		/* Composed movement symbolic chars */
+		case FWD_LEFT_CHAR:
+			/*
+				 __
+				|  |
+				|
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA6) |
+					(1<<PA5) | (1<<PA7);
+			break;
+		case FWD_RIGHT_CHAR:
+			/*
+				 __
+				|  |
+				   |
+
+			*/
+			PORTA = (1<<PA3) | (1<<PA6) |
+					(1<<PA5) | (1<<PA7);
+			break;
+		case BKD_LEFT_CHAR:
+			/*
+				
+				|
+				|__|
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA2) |
+					(1<<PA3) | (1<<PA5);
+			break;
+		case BKD_RIGHT_CHAR:
+			/*
+				
+				   |
+				|__|
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA2) |
+					(1<<PA3) | (1<<PA6);
+			break;
+		
 		default:
 			/*
 				 __
@@ -437,16 +482,16 @@ extern void sseg_wait_anim(){
 				break;
 		}
 
-		_delay_ms(50);
+		_delay_ms(50.);
 	}
 }
 
 /* Displays an error message */
 extern void sseg_error(char c){
 	sseg_display('E');
-	_delay_ms(600);
+	_delay_ms(600.);
 	sseg_display(c);
-	_delay_ms(600);
+	_delay_ms(600.);
 }
 
 /* Prints a string char by char
@@ -455,8 +500,8 @@ extern void print_str(char *str){
 	while(str[0] != '\0'){
 		sseg_display(str[0]);
 		str++;
-		_delay_ms(800);
+		_delay_ms(800.);
 		sseg_display(' ');
-		_delay_ms(50);
+		_delay_ms(50.);
 	}
 }

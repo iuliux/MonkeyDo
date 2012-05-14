@@ -6,6 +6,16 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+/* 
+ * Symbolic chars for composed directions identification
+ * (Chars were choses as 'never useful' ones. If any of 
+ * them is needed, just change it with another unused one)
+ */
+#define FWD_LEFT_CHAR '&'
+#define FWD_RIGHT_CHAR '%'
+#define BKD_LEFT_CHAR '$'
+#define BKD_RIGHT_CHAR '@'
+
 /*
 	Seven-segments one character display
 	 ____

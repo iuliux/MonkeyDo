@@ -9,7 +9,7 @@ extern void init_car(){
 extern void go_fwd(){
 	/* Set forward command */
 	PORTC |= (1<<PC4);
-	/* Unset backward command */
+	/* Unset backward command, just in case */
 	PORTC &= ~(1<<PC5);
 }
 
@@ -25,32 +25,17 @@ extern void brake(){
 }
 
 extern void turn_left(){
+	/* Set left command */
+	PORTC |= (1<<PC7);
+	/* Unset right command */
+	PORTC &= ~(1<<PC6);
+}
+
+extern void turn_right(){
 	PORTC |= (1<<PC6);
 	PORTC &= ~(1<<PC7);
 }
 
-extern void turn_right(){
-	PORTC |= (1<<PC7);
-	PORTC &= ~(1<<PC6);
-}
-
-
-extern void go_fwd_for(int milisecs){
-
-}
-
-extern void go_bkd_for(int milisecs){
-
-}
-
-extern void brake_for(int milisecs){
-
-}
-
-extern void turn_left_for(int milisecs){
-
-}
-
-extern void turn_right_for(int milisecs){
-
+extern void no_movement(){
+	PORTC = 0x00;
 }

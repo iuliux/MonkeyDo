@@ -37,38 +37,46 @@ static UINT play (const char *fn){
 	_delay_ms(1000);
 
 	for (;;) {
+		BOOL left = 0, right = 0;
+
 		unsigned char movement = parse_movement();
 		if(movement == PARSE_ERR)
 			return 1;
 
 		unsigned int duration = parse_duration();
-		if(duration == 0)
+		if(duration == 0) /* Yes, 0 duration is illegal */
 			return 1;
 
 		if((movement & (UCHAR)DIR_MASK) == (UCHAR)DIR_LFT){
-			sseg_display('<');
-			_delay_ms(600);
+			left = TRUE;
+			turn_left();
 		}else if((movement & (UCHAR)DIR_MASK) == (UCHAR)DIR_RGT){
-			sseg_display('>');
-			_delay_ms(600);
+			right = TRUE;
+			turn_right();
 		}
 
-		if((movement & (UCHAR)ACC_MASK) == (UCHAR)ACC_FWD)
-			sseg_display('^');
-		else if((movement & (UCHAR)ACC_MASK) == (UCHAR)ACC_BKD)
-			sseg_display('v');
-		else if((movement & (UCHAR)ACC_MASK) == (UCHAR)ACC_BRK)
-			sseg_display('-');
+		if((movement & (UCHAR)ACC_MASK) == (UCHAR)ACC_FWD){
+			if(left){
+				sseg_display(FWD_LEFT_CHAR);
+			}else if(right){
+				sseg_display(FWD_RIGHT_CHAR);
+			}else
+				sseg_display('^');
+				
+			go_fwd();
+		} else if((movement & (UCHAR)ACC_MASK) == (UCHAR)ACC_BKD){
+			if(left){
+				sseg_display(BKD_LEFT_CHAR);
+			}else if(right){
+				sseg_display(BKD_RIGHT_CHAR);
+			}else
+				sseg_display('v');
 
-		// while(duration > 0){
-		// 	sseg_display('0' + duration%10);
-		// 	duration = duration / 10;
-		// 	_delay_ms(600);
-		// 	sseg_display(' ');
-		// 	_delay_ms(100);
-		// }
-		// sseg_display(' ');
-		// _delay_ms(1000);
+			go_bkd();
+		} else if((movement & (UCHAR)ACC_MASK) == (UCHAR)ACC_BRK){
+			sseg_display('-');
+			brake();
+		}
 
 		while(duration > 6000){
 			/* Max time for _delay_ms is 6.5 secs */
@@ -77,6 +85,7 @@ static UINT play (const char *fn){
 		}
 		_delay_ms((double)duration);
 		sseg_display(' ');
+		no_movement();
 	}
 }
 
@@ -111,9 +120,6 @@ go_fwd();
 		}
 		while (!pf_readdir(&Dir, &Fno) && Fno.fname[0]) {
 			if (!(Fno.fattrib & (AM_DIR|AM_HID)) && strcmp(Fno.fname, "MAIN.MKD") == 0) {
-				// print_str(Fno.fname);
-				// sseg_wait_anim();
-				// _delay_ms(1000);
 				if (play(Fno.fname)){
 					sseg_error('P');
 					break;
