@@ -10,7 +10,7 @@ extern unsigned char parse_movement(){
 	while((*buff) != '('){
 		pf_read(buff, 1, &rb);
 		if(!rb)
-			return 'P';
+			return PARSE_ERR;
 	}
 
 	pf_read(buff, 1, &rb);
@@ -48,7 +48,7 @@ extern unsigned char parse_movement(){
 			acc = ACC_BKD;
 			break;
 		default:
-			return 'X';
+			return PARSE_ERR;
 	}
 
 	/* Also consume the ')' */
@@ -59,4 +59,44 @@ extern unsigned char parse_movement(){
 	}
 
 	return (unsigned char)(acc | dir);
+}
+
+static int is_digit(char c){
+	switch(c){
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			return 1;
+	}
+	return 0;
+}
+
+extern unsigned int parse_duration(){
+	unsigned char *buff = malloc(sizeof(char));
+	WORD rb = 0;
+	unsigned int acc = 0;
+
+	/* Consume whitespace */
+	while(!is_digit(*buff)){
+		pf_read(buff, 1, &rb);
+		if(!rb)
+			return 0;
+	}
+
+	while(is_digit(*buff)){
+		acc *= 10;
+		acc += (*buff) - '0';
+		pf_read(buff, 1, &rb);
+		if(!rb)
+			break;
+	}
+
+	return acc;
 }

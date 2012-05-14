@@ -1,11 +1,17 @@
 #ifndef __PARSER
 #define __PARSER
 
-#include <string.h>
+#define F_CPU 16000000
+
+#include <stdlib.h>
+#include <stdio.h>
 #include "diskio.h"
 #include "pff.h"
 
-#define PARSE_ERR 'F';
+#include <util/delay.h>
+#include "seven_segment.h"
+
+#define PARSE_ERR 0xFF
 
 #define DIR_MASK 0x0F
 #define ACC_MASK 0xF0
@@ -20,5 +26,7 @@
 #define DIR_RGT 0x02
 
 unsigned char parse_movement(void);
+
+unsigned int parse_duration(void);
 
 #endif

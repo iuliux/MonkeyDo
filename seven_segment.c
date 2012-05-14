@@ -28,6 +28,9 @@ extern void sseg_display(char c){
 			PORTA = 0x00;
 			break;
 		case '0':
+		case 'O':
+		case 'o':
+		case 'D':
 			/*
 				 __
 				|  |
@@ -112,6 +115,7 @@ extern void sseg_display(char c){
 					(1<<PA5) | (1<<PA6);
 			break;
 		case 'F':
+		case 'f':
 			/*
 				 __
 				|__
@@ -122,7 +126,6 @@ extern void sseg_display(char c){
 					(1<<PA4) | (1<<PA7);
 			break;
 		case 'E':
-		case 0xFF:
 			/* Probably used for Error
 				 __
 				|__
@@ -202,6 +205,28 @@ extern void sseg_display(char c){
 					(1<<PA3) | (1<<PA4) |
 					(1<<PA5);
 			break;
+		case 'd':
+			/*
+				 
+				 __|
+				|__|
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA2) |
+					(1<<PA3) | (1<<PA4) |
+					(1<<PA6);
+			break;
+		case 'e':
+			/*
+				 __
+				|__|
+				|__ 
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA2) |
+					(1<<PA7) | (1<<PA4) |
+					(1<<PA5) | (1<<PA6);
+			break;
 		case 'r':
 			/*
 			
@@ -213,6 +238,8 @@ extern void sseg_display(char c){
 			break;
 		case 'X':
 		case 'H':
+		case 'M':
+		case 'N':
 			/*
 				
 				|__|
@@ -222,6 +249,18 @@ extern void sseg_display(char c){
 			PORTA = (1<<PA1) | (1<<PA6) |
 					(1<<PA3) | (1<<PA4) |
 					(1<<PA5);
+			break;
+		case 'K':
+		case 'k':
+			/*
+				 __
+				|__ 
+				|  |
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA3) |
+					(1<<PA5) | (1<<PA4) |
+					(1<<PA7);
 			break;
 		case '^':
 			/*
@@ -244,6 +283,57 @@ extern void sseg_display(char c){
 			*/
 			PORTA = (1<<PA1) | (1<<PA2) |
 					(1<<PA3);
+			break;
+		case 'U':
+			/*
+				
+				|  |
+				|__|
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA2) |
+					(1<<PA3) | (1<<PA5) |
+					(1<<PA6);
+			break;
+		case 'n':
+			/*
+				
+				 __
+				|  |
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA3) |
+					(1<<PA4);
+			break;
+		case 'I':
+		// case 'i':
+			/*
+
+				   |
+				   |
+
+			*/
+			PORTA = (1<<PA3) | (1<<PA6);
+			break;
+		case 'T':
+		case 't':
+			/*
+				 __
+				|   
+				|   
+
+			*/
+			PORTA = (1<<PA1) | (1<<PA5) |
+					(1<<PA7);
+			break;
+		case '.':
+			/*
+				
+				 
+				   |
+
+			*/
+			PORTA = (1<<PA3);
 			break;
 		case '<':
 			/*
@@ -276,13 +366,13 @@ extern void sseg_display(char c){
 			break;
 		default:
 			/*
-				 
 				 __
-				|__|
+				 __
+				 __ 
 
 			*/
-			PORTA = (1<<PA1) | (1<<PA2) |
-					(1<<PA3) | (1<<PA4);
+			PORTA = (1<<PA2) | (1<<PA4) |
+					(1<<PA7);
 	}
 }
 
@@ -347,6 +437,26 @@ extern void sseg_wait_anim(){
 				break;
 		}
 
-		_delay_ms(1000);
+		_delay_ms(50);
+	}
+}
+
+/* Displays an error message */
+extern void sseg_error(char c){
+	sseg_display('E');
+	_delay_ms(600);
+	sseg_display(c);
+	_delay_ms(600);
+}
+
+/* Prints a string char by char
+ * (Well, tries it's best, I mean) */
+extern void print_str(char *str){
+	while(str[0] != '\0'){
+		sseg_display(str[0]);
+		str++;
+		_delay_ms(800);
+		sseg_display(' ');
+		_delay_ms(50);
 	}
 }
