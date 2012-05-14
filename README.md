@@ -21,7 +21,7 @@ An example of the format:
     (<-) 33
     (-) 1522
 
-More can be found on the [MonkeySee](https://github.com/iuliux/MonkeySee/) page.
+More can be found on the UTF+f001 [MonkeySee](https://github.com/iuliux/MonkeySee/) page.
 
 ## Using OpenSource tools:
 * [Petit FAT File System](http://elm-chan.org/fsw/ff/00index_p.html)
