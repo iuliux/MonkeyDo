@@ -33,7 +33,7 @@ static UINT play (const char *fn){
 		return 1;
 	}
 
-	sseg_display('S'); /* Start */
+	sseg_start_anim(); /* Start */
 	_delay_ms(1000);
 
 	for (;;) { /* For each instruction/command */
@@ -120,10 +120,10 @@ int main (void)
 			break;
 		}
 		while (!pf_readdir(&Dir, &Fno) && Fno.fname[0]) {
-			if (!(Fno.fattrib & (AM_DIR|AM_HID)) && strcmp(Fno.fname, "MAIN.MKD") == 0) {
+			if (!(Fno.fattrib & (AM_DIR|AM_HID)) && strstr(Fno.fname, ".MKD")) {
 				if (play(Fno.fname)){
 					sseg_error('P');
-					break;
+					// break;
 				}
 			}
 		}

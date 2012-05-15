@@ -489,6 +489,17 @@ extern void sseg_wait_anim(){
 	}
 }
 
+/* Plays a nice little animation displaying S */
+extern void sseg_start_anim(){
+	int i;
+	for(i = 10; i > 0; i--){
+		sseg_display('S');
+		_delay_ms(i * 10.);
+		sseg_display(' ');
+		_delay_ms(i * 10.);
+	}
+}
+
 /* Displays an error message */
 extern void sseg_error(char c){
 	sseg_display('E');

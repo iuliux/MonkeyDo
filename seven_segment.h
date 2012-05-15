@@ -41,6 +41,10 @@ void sseg_display(char c);
 /* Plays one complete animation sequence. Does not loop. */
 void sseg_wait_anim(void);
 
+/* Plays a nice little animation displaying S (symbol
+ * for start) in the fashion of a bomb going off */
+void sseg_start_anim(void);
+
 /* Displays an error message */
 void sseg_error(char c);
 
