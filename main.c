@@ -36,7 +36,7 @@ static UINT play (const char *fn){
 	sseg_display('S'); /* Start */
 	_delay_ms(1000);
 
-	for (;;) {
+	for (;;) { /* For each instruction/command */
 		BOOL left = 0, right = 0;
 
 		unsigned char movement = parse_movement();
@@ -97,13 +97,14 @@ static UINT play (const char *fn){
  */
 int main (void)
 {
+	/* Init SD/MMC */
 	DDRD |= (1<<PD7);
 	DDRB &= ~(1<<PB1);
 	PORTB |= (1<<PB1);
 
 	init_car();
 	init_sseg();
-go_fwd();
+
 	for (;;) {
 		_delay_ms(1000);
 		if (pf_mount(&Fs)){
@@ -127,6 +128,8 @@ go_fwd();
 			}
 		}
 	}
-	PORTA = 0x00;
+
+	sseg_display(' ');
+	no_movement();
 	return 0;
 }

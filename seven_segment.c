@@ -1,6 +1,7 @@
 #include "seven_segment.h"
 
 void init_sseg(){
+	/* Explicitly disable ADC */
 	ADCSRA &= ~(1<<ADEN);
 
 	DDRA = 0xFF;
@@ -174,6 +175,7 @@ extern void sseg_display(char c){
 			break;
 		case '5':
 		case 'S':
+		case 's':
 			/*
 				 __
 				|__ 
@@ -274,6 +276,7 @@ extern void sseg_display(char c){
 					(1<<PA6);
 			break;
 		case 'n':
+		case 'm':
 			/*
 				
 				 __
