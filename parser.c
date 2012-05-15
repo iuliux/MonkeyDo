@@ -6,16 +6,21 @@ extern unsigned char parse_movement(){
 	char steering = 0;
 	unsigned char dir = DIR_NON,
 					acc = ACC_NON;
+	(*buff)	= '\0';
 
 	while((*buff) != '('){
 		pf_read(buff, 1, &rb);
-		if(!rb)
+		if(!rb){
+			free(buff);
 			return PARSE_ERR;
+		}
 	}
 
 	pf_read(buff, 1, &rb);
-	if(!rb)
+	if(!rb){
+		free(buff);
 		return PARSE_ERR;
+	}
 
 	switch((*buff)){
 		case '<':
@@ -31,8 +36,10 @@ extern unsigned char parse_movement(){
 	/* Advance if steering command present */
 	if(steering){
 		pf_read(buff, 1, &rb);
-		if(!rb)
+		if(!rb){
+			free(buff);
 			return PARSE_ERR;
+		}
 	}
 
 	switch((*buff)){
@@ -48,16 +55,20 @@ extern unsigned char parse_movement(){
 			acc = ACC_BKD;
 			break;
 		default:
+			free(buff);
 			return PARSE_ERR;
 	}
 
 	/* Also consume the ')' */
 	if(steering){
 		pf_read(buff, 1, &rb);
-		if(!rb)
+		if(!rb){
+			free(buff);
 			return PARSE_ERR;
+		}
 	}
 
+	free(buff);
 	return (unsigned char)(acc | dir);
 }
 
@@ -86,8 +97,10 @@ extern unsigned int parse_duration(){
 	/* Consume whitespace */
 	while(!is_digit(*buff)){
 		pf_read(buff, 1, &rb);
-		if(!rb)
+		if(!rb){
+			free(buff);
 			return 0;
+		}
 	}
 
 	while(is_digit(*buff)){
@@ -98,5 +111,6 @@ extern unsigned int parse_duration(){
 			break;
 	}
 
+	free(buff);
 	return acc;
 }
