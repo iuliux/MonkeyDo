@@ -1,7 +1,7 @@
+![MonkeySee Logo](http://iuliux.ro/monkeysee/images/monkeydo-logo.png)
+
 MonkeyDo
 ======
-
-![MonkeySee Logo](http://iuliux.ro/monkeysee/images/monkeydo-logo.png)
 
 ## What is it?
 A program that runs on a robo-car controlled by an `ATmega16` microcontorller. It reads `.mkd` (MonKeyDo) format files from an SD/MMC card and interprets the commands in that file.  
